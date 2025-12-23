@@ -13,18 +13,15 @@ public class VendorTier {
     private String tierName;
     private String description;
 
-    // Default constructor
     public VendorTier() {
     }
 
-    // Parameterized constructor
     public VendorTier(Long id, String tierName, String description) {
         this.id = id;
         this.tierName = tierName;
         this.description = description;
     }
 
-    // Getters & Setters
     public Long getId() {
         return id;
     }

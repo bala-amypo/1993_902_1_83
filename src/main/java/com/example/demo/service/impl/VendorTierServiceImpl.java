@@ -17,12 +17,22 @@ public class VendorTierServiceImpl implements VendorTierService {
     }
 
     @Override
-    public List<VendorTier> getAllTiers() {
+    public VendorTier saveVendorTier(VendorTier vendorTier) {
+        return vendorTierRepository.save(vendorTier);
+    }
+
+    @Override
+    public List<VendorTier> getAllVendorTiers() {
         return vendorTierRepository.findAll();
     }
 
     @Override
-    public VendorTier saveTier(VendorTier tier) {
-        return vendorTierRepository.save(tier);
+    public VendorTier getVendorTierById(Long id) {
+        return vendorTierRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteVendorTier(Long id) {
+        vendorTierRepository.deleteById(id);
     }
 }

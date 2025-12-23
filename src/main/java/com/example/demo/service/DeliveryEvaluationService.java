@@ -5,7 +5,11 @@ import java.util.List;
 
 public interface DeliveryEvaluationService {
 
+    DeliveryEvaluation saveEvaluation(DeliveryEvaluation evaluation);
+
     List<DeliveryEvaluation> getAllEvaluations();
 
-    DeliveryEvaluation saveEvaluation(DeliveryEvaluation evaluation);
+    DeliveryEvaluation getEvaluationById(Long id);
+
+    void deleteEvaluation(Long id);
 }

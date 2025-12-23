@@ -5,7 +5,11 @@ import java.util.List;
 
 public interface SLARequirementService {
 
+    SLARequirement saveRequirement(SLARequirement requirement);
+
     List<SLARequirement> getAllRequirements();
 
-    SLARequirement saveRequirement(SLARequirement requirement);
+    SLARequirement getRequirementById(Long id);
+
+    void deleteRequirement(Long id);
 }

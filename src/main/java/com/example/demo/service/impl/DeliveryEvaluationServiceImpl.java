@@ -19,13 +19,22 @@ public class DeliveryEvaluationServiceImpl
     }
 
     @Override
+    public DeliveryEvaluation saveEvaluation(DeliveryEvaluation evaluation) {
+        return repository.save(evaluation);
+    }
+
+    @Override
     public List<DeliveryEvaluation> getAllEvaluations() {
         return repository.findAll();
     }
 
     @Override
-    public DeliveryEvaluation saveEvaluation(
-            DeliveryEvaluation evaluation) {
-        return repository.save(evaluation);
+    public DeliveryEvaluation getEvaluationById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteEvaluation(Long id) {
+        repository.deleteById(id);
     }
 }

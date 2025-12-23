@@ -17,12 +17,22 @@ public class SLARequirementServiceImpl implements SLARequirementService {
     }
 
     @Override
+    public SLARequirement saveRequirement(SLARequirement requirement) {
+        return repository.save(requirement);
+    }
+
+    @Override
     public List<SLARequirement> getAllRequirements() {
         return repository.findAll();
     }
 
     @Override
-    public SLARequirement saveRequirement(SLARequirement requirement) {
-        return repository.save(requirement);
+    public SLARequirement getRequirementById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteRequirement(Long id) {
+        repository.deleteById(id);
     }
 }

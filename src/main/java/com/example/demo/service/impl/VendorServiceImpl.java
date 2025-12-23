@@ -17,12 +17,22 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
+    public Vendor saveVendor(Vendor vendor) {
+        return vendorRepository.save(vendor);
+    }
+
+    @Override
     public List<Vendor> getAllVendors() {
         return vendorRepository.findAll();
     }
 
     @Override
-    public Vendor saveVendor(Vendor vendor) {
-        return vendorRepository.save(vendor);
+    public Vendor getVendorById(Long id) {
+        return vendorRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteVendor(Long id) {
+        vendorRepository.deleteById(id);
     }
 }

@@ -5,7 +5,11 @@ import java.util.List;
 
 public interface VendorTierService {
 
-    List<VendorTier> getAllTiers();
+    VendorTier saveVendorTier(VendorTier vendorTier);
 
-    VendorTier saveTier(VendorTier tier);
+    List<VendorTier> getAllVendorTiers();
+
+    VendorTier getVendorTierById(Long id);
+
+    void deleteVendorTier(Long id);
 }

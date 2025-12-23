@@ -8,6 +8,11 @@ public class AuthController {
 
     @GetMapping("/test")
     public String test() {
-        return "Auth Controller Working";
+        return "Auth GET working";
+    }
+
+    @PostMapping("/login")
+    public String login() {
+        return "Auth POST working";
     }
 }

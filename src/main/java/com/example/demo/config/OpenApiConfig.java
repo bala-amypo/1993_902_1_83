@@ -21,7 +21,7 @@ public class OpenApiConfig {
                         .version("1.0.0")
                 )
                 .servers(List.of(
-                        new Server().url("http://localhost:9008")
+                        new Server().url("https://9008.408procr.amypo.ai/")
                 ));
     }
 }

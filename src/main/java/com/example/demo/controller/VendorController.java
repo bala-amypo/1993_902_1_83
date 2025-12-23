@@ -7,7 +7,22 @@ import org.springframework.web.bind.annotation.*;
 public class VendorController {
 
     @GetMapping
-    public String vendor() {
-        return "Vendor API Working";
+    public String getVendor() {
+        return "GET Vendor";
+    }
+
+    @PostMapping
+    public String createVendor() {
+        return "POST Vendor";
+    }
+
+    @PutMapping("/{id}")
+    public String updateVendor(@PathVariable Long id) {
+        return "PUT Vendor " + id;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteVendor(@PathVariable Long id) {
+        return "DELETE Vendor " + id;
     }
 }

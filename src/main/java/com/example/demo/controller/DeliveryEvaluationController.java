@@ -7,7 +7,22 @@ import org.springframework.web.bind.annotation.*;
 public class DeliveryEvaluationController {
 
     @GetMapping
-    public String evaluate() {
-        return "Delivery Evaluation API Working";
+    public String getEvaluation() {
+        return "GET Delivery Evaluation";
+    }
+
+    @PostMapping
+    public String createEvaluation() {
+        return "POST Delivery Evaluation";
+    }
+
+    @PutMapping("/{id}")
+    public String updateEvaluation(@PathVariable Long id) {
+        return "PUT Delivery Evaluation " + id;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteEvaluation(@PathVariable Long id) {
+        return "DELETE Delivery Evaluation " + id;
     }
 }

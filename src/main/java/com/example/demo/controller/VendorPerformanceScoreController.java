@@ -7,7 +7,22 @@ import org.springframework.web.bind.annotation.*;
 public class VendorPerformanceScoreController {
 
     @GetMapping
-    public String score() {
-        return "Vendor Performance Score API Working";
+    public String getScore() {
+        return "GET Vendor Performance";
+    }
+
+    @PostMapping
+    public String createScore() {
+        return "POST Vendor Performance";
+    }
+
+    @PutMapping("/{id}")
+    public String updateScore(@PathVariable Long id) {
+        return "PUT Vendor Performance " + id;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteScore(@PathVariable Long id) {
+        return "DELETE Vendor Performance " + id;
     }
 }

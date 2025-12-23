@@ -6,23 +6,38 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/vendor-tier")
 public class VendorTierController {
 
+    private final VendorTierService vendorTierService;
+
+    public VendorTierController(VendorTierService vendorTierService) {
+        this.vendorTierService = vendorTierService;
+    }
+
     @GetMapping
-    public String getTier() {
-        return "GET Vendor Tier";
+    public List<VendorTier> getAllTiers() {
+        return vendorTierService.getAllVendorTiers();
+    }
+
+    @GetMapping("/{id}")
+    public VendorTier getTierById(@PathVariable Long id) {
+        return vendorTierService.getVendorTierById(id);
     }
 
     @PostMapping
-    public String createTier() {
-        return "POST Vendor Tier";
+    public VendorTier createTier(@RequestBody VendorTier vendorTier) {
+        return vendorTierService.saveVendorTier(vendorTier);
     }
 
     @PutMapping("/{id}")
-    public String updateTier(@PathVariable Long id) {
-        return "PUT Vendor Tier " + id;
+    public VendorTier updateTier(
+            @PathVariable Long id,
+            @RequestBody VendorTier vendorTier) {
+
+        vendorTier.setId(id);
+        return vendorTierService.saveVendorTier(vendorTier);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTier(@PathVariable Long id) {
-        return "DELETE Vendor Tier " + id;
+    public void deleteTier(@PathVariable Long id) {
+        vendorTierService.deleteVendorTier(id);
     }
 }

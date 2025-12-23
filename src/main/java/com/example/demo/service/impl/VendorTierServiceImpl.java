@@ -10,29 +10,29 @@ import java.util.List;
 @Service
 public class VendorTierServiceImpl implements VendorTierService {
 
-    private final VendorTierRepository vendorTierRepository;
+    private final VendorTierRepository repository;
 
-    public VendorTierServiceImpl(VendorTierRepository vendorTierRepository) {
-        this.vendorTierRepository = vendorTierRepository;
+    public VendorTierServiceImpl(VendorTierRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public VendorTier saveVendorTier(VendorTier vendorTier) {
-        return vendorTierRepository.save(vendorTier);
+        return repository.save(vendorTier);
     }
 
     @Override
     public List<VendorTier> getAllVendorTiers() {
-        return vendorTierRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public VendorTier getVendorTierById(Long id) {
-        return vendorTierRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public void deleteVendorTier(Long id) {
-        vendorTierRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

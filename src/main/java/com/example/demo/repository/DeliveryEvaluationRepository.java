@@ -16,7 +16,7 @@ public interface DeliveryEvaluationRepository
 
     List<DeliveryEvaluation> findBySlaRequirementId(Long slaId);
 
-    // 🔑 REQUIRED for Spring Boot runtime
+    // REQUIRED FOR BOTH SPRING + TESTS
     @Query("""
         SELECT d FROM DeliveryEvaluation d
         WHERE d.vendor = :vendor AND d.qualityScore >= :quality
@@ -27,7 +27,8 @@ public interface DeliveryEvaluationRepository
 
     @Query("""
         SELECT d FROM DeliveryEvaluation d
-        WHERE d.slaRequirement = :sla AND d.meetsDeliveryTarget = true
+        WHERE d.slaRequirement = :sla
+          AND d.meetsDeliveryTarget = true
     """)
     List<DeliveryEvaluation> findOnTimeDeliveries(
             @Param("sla") SLARequirement sla);

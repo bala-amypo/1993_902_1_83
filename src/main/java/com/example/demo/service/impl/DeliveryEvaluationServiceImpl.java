@@ -1,40 +1,42 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.model.DeliveryEvaluation;
-import com.example.demo.repository.DeliveryEvaluationRepository;
-import com.example.demo.service.DeliveryEvaluationService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
-public class DeliveryEvaluationServiceImpl
-        implements DeliveryEvaluationService {
+public class DeliveryEvaluationServiceImpl implements DeliveryEvaluationService {
 
-    private final DeliveryEvaluationRepository repository;
+    private final DeliveryEvaluationRepository repo;
+    private final VendorRepository vendorRepo;
+    private final SLARequirementRepository slaRepo;
 
     public DeliveryEvaluationServiceImpl(
-            DeliveryEvaluationRepository repository) {
-        this.repository = repository;
+            DeliveryEvaluationRepository repo,
+            VendorRepository vendorRepo,
+            SLARequirementRepository slaRepo) {
+        this.repo = repo;
+        this.vendorRepo = vendorRepo;
+        this.slaRepo = slaRepo;
     }
 
-    @Override
-    public DeliveryEvaluation saveEvaluation(DeliveryEvaluation evaluation) {
-        return repository.save(evaluation);
-    }
+    public DeliveryEvaluation createEvaluation(DeliveryEvaluation eval) {
 
-    @Override
-    public List<DeliveryEvaluation> getAllEvaluations() {
-        return repository.findAll();
-    }
+        Vendor vendor = vendorRepo.findById(eval.getVendor().getId())
+                .orElseThrow();
 
-    @Override
-    public DeliveryEvaluation getEvaluationById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
+        if (!vendor.getActive())
+            throw new IllegalStateException("Only active vendors allowed");
 
-    @Override
-    public void deleteEvaluation(Long id) {
-        repository.deleteById(id);
+        if (eval.getActualDeliveryDays() < 0)
+            throw new IllegalArgumentException(">= 0");
+
+        if (eval.getQualityScore() < 0 || eval.getQualityScore() > 100)
+            throw new IllegalArgumentException("between 0 and 100");
+
+        SLARequirement sla = slaRepo.findById(eval.getSlaRequirement().getId())
+                .orElseThrow();
+
+        eval.setMeetsDeliveryTarget(
+                eval.getActualDeliveryDays() <= sla.getMaxDeliveryDays());
+
+        eval.setMeetsQualityTarget(
+                eval.getQualityScore() >= sla.getQualityThreshold());
+
+        return repo.save(eval);
     }
 }

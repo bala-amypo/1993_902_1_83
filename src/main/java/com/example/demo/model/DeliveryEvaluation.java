@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "delivery_evaluations")
@@ -10,39 +11,52 @@ public class DeliveryEvaluation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String deliveryStatus;
-    private String comments;
+    @ManyToOne
+    private Vendor vendor;
 
-    public DeliveryEvaluation() {
+    @ManyToOne
+    private SLARequirement slaRequirement;
+
+    private Integer actualDeliveryDays;
+    private Double qualityScore;
+
+    private Boolean meetsDeliveryTarget;
+    private Boolean meetsQualityTarget;
+
+    private LocalDate evaluationDate;
+
+    public DeliveryEvaluation() {}
+
+    public DeliveryEvaluation(Vendor v, SLARequirement s, int days, double quality, LocalDate date) {
+        this.vendor = v;
+        this.slaRequirement = s;
+        this.actualDeliveryDays = days;
+        this.qualityScore = quality;
+        this.evaluationDate = date;
     }
 
-    public DeliveryEvaluation(Long id, String deliveryStatus, String comments) {
-        this.id = id;
-        this.deliveryStatus = deliveryStatus;
-        this.comments = comments;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public Vendor getVendor() { return vendor; }
+    public void setVendor(Vendor vendor) { this.vendor = vendor; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public SLARequirement getSlaRequirement() { return slaRequirement; }
+    public void setSlaRequirement(SLARequirement slaRequirement) { this.slaRequirement = slaRequirement; }
 
-    public String getDeliveryStatus() {
-        return deliveryStatus;
-    }
+    public Integer getActualDeliveryDays() { return actualDeliveryDays; }
+    public void setActualDeliveryDays(Integer actualDeliveryDays) { this.actualDeliveryDays = actualDeliveryDays; }
 
-    public void setDeliveryStatus(String deliveryStatus) {
-        this.deliveryStatus = deliveryStatus;
-    }
+    public Double getQualityScore() { return qualityScore; }
+    public void setQualityScore(Double qualityScore) { this.qualityScore = qualityScore; }
 
-    public String getComments() {
-        return comments;
-    }
+    public Boolean getMeetsDeliveryTarget() { return meetsDeliveryTarget; }
+    public void setMeetsDeliveryTarget(Boolean meetsDeliveryTarget) { this.meetsDeliveryTarget = meetsDeliveryTarget; }
 
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
+    public Boolean getMeetsQualityTarget() { return meetsQualityTarget; }
+    public void setMeetsQualityTarget(Boolean meetsQualityTarget) { this.meetsQualityTarget = meetsQualityTarget; }
+
+    public LocalDate getEvaluationDate() { return evaluationDate; }
+    public void setEvaluationDate(LocalDate evaluationDate) { this.evaluationDate = evaluationDate; }
 }

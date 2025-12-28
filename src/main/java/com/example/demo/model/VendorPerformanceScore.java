@@ -1,48 +1,35 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "vendor_performance_scores")
+@Table(name = "vendor_scores")
 public class VendorPerformanceScore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer score;
-    private String remarks;
+    @ManyToOne
+    private Vendor vendor;
 
-    public VendorPerformanceScore() {
+    private Double onTimePercentage;
+    private Double qualityCompliancePercentage;
+    private Double overallScore;
+
+    private LocalDateTime calculatedAt = LocalDateTime.now();
+
+    public VendorPerformanceScore() {}
+
+    public VendorPerformanceScore(Vendor v, Double on, Double q, Double o) {
+        this.vendor = v;
+        this.onTimePercentage = on;
+        this.qualityCompliancePercentage = q;
+        this.overallScore = o;
     }
 
-    public VendorPerformanceScore(Long id, Integer score, String remarks) {
-        this.id = id;
-        this.score = score;
-        this.remarks = remarks;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
+    public Double getOnTimePercentage() { return onTimePercentage; }
+    public Double getQualityCompliancePercentage() { return qualityCompliancePercentage; }
+    public Double getOverallScore() { return overallScore; }
 }

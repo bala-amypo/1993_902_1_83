@@ -1,37 +1,61 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.VendorTier;
-import com.example.demo.repository.VendorTierRepository;
-import com.example.demo.service.VendorTierService;
+import com.example.demo.model.Vendor;
+import com.example.demo.repository.VendorRepository;
+import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class VendorTierServiceImpl implements VendorTierService {
+public class VendorServiceImpl implements VendorService {
 
-    private final VendorTierRepository repository;
+    private final VendorRepository vendorRepository;
 
-    public VendorTierServiceImpl(VendorTierRepository repository) {
-        this.repository = repository;
+    // Constructor injection (used by Mockito tests)
+    public VendorServiceImpl(VendorRepository vendorRepository) {
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
-    public VendorTier createTier(VendorTier tier) {
-
-        if (tier.getMinScoreThreshold() < 0 ||
-                tier.getMinScoreThreshold() > 100)
-            throw new IllegalArgumentException("Threshold must be between 0–100");
-
-        if (repository.existsByTierName(tier.getTierName()))
-            throw new IllegalArgumentException("Tier name must be unique");
-
-        return repository.save(tier);
+    public Vendor createVendor(Vendor vendor) {
+        if (vendorRepository.existsByName(vendor.getName())) {
+            throw new IllegalArgumentException("Vendor name must be unique");
+        }
+        return vendorRepository.save(vendor);
     }
 
     @Override
-    public void deactivateTier(Long id) {
-        VendorTier tier = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tier not found"));
-        tier.setActive(false);
-        repository.save(tier);
+    public Vendor updateVendor(Long id, Vendor update) {
+        Vendor existing = vendorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Vendor not found"));
+
+        if (update.getContactEmail() != null) {
+            existing.setContactEmail(update.getContactEmail());
+        }
+
+        if (update.getContactPhone() != null) {
+            existing.setContactPhone(update.getContactPhone());
+        }
+
+        return vendorRepository.save(existing);
+    }
+
+    @Override
+    public Vendor getVendorById(Long id) {
+        return vendorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Vendor not found"));
+    }
+
+    @Override
+    public List<Vendor> getAllVendors() {
+        return vendorRepository.findAll();
+    }
+
+    @Override
+    public void deactivateVendor(Long id) {
+        Vendor vendor = getVendorById(id);
+        vendor.setActive(false);
+        vendorRepository.save(vendor);
     }
 }

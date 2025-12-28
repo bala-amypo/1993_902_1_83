@@ -1,28 +1,26 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.VendorTier;
+import com.example.demo.service.VendorTierService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/vendor-tier")
+@RequestMapping("/vendor-tiers")
 public class VendorTierController {
 
-    @GetMapping
-    public String getTier() {
-        return "GET Vendor Tier";
+    private final VendorTierService service;
+
+    public VendorTierController(VendorTierService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public String createTier() {
-        return "POST Vendor Tier";
-    }
-
-    @PutMapping("/{id}")
-    public String updateTier(@PathVariable Long id) {
-        return "PUT Vendor Tier " + id;
+    public VendorTier create(@RequestBody VendorTier tier) {
+        return service.createTier(tier);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTier(@PathVariable Long id) {
-        return "DELETE Vendor Tier " + id;
+    public void deactivate(@PathVariable Long id) {
+        service.deactivateTier(id);
     }
 }

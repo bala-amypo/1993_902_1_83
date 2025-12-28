@@ -5,11 +5,9 @@ import java.util.List;
 
 public interface VendorPerformanceScoreService {
 
-    VendorPerformanceScore saveScore(VendorPerformanceScore score);
+    VendorPerformanceScore calculateScore(Long vendorId);
 
-    List<VendorPerformanceScore> getAllScores();
+    VendorPerformanceScore getLatestScore(Long vendorId);
 
-    VendorPerformanceScore getScoreById(Long id);
-
-    void deleteScore(Long id);
+    List<VendorPerformanceScore> getScoresForVendor(Long vendorId);
 }

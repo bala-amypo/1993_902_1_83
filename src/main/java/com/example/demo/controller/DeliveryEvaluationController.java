@@ -1,28 +1,36 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.DeliveryEvaluation;
+import com.example.demo.service.DeliveryEvaluationService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/delivery-evaluation")
+@RequestMapping("/evaluations")
 public class DeliveryEvaluationController {
 
-    @GetMapping
-    public String getEvaluation() {
-        return "GET Delivery Evaluation";
+    private final DeliveryEvaluationService service;
+
+    public DeliveryEvaluationController(DeliveryEvaluationService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public String createEvaluation() {
-        return "POST Delivery Evaluation";
+    public DeliveryEvaluation createEvaluation(
+            @RequestBody DeliveryEvaluation evaluation) {
+        return service.createEvaluation(evaluation);
     }
 
-    @PutMapping("/{id}")
-    public String updateEvaluation(@PathVariable Long id) {
-        return "PUT Delivery Evaluation " + id;
+    @GetMapping("/vendor/{vendorId}")
+    public List<DeliveryEvaluation> getByVendor(
+            @PathVariable Long vendorId) {
+        return service.getEvaluationsForVendor(vendorId);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteEvaluation(@PathVariable Long id) {
-        return "DELETE Delivery Evaluation " + id;
+    @GetMapping("/sla/{slaId}")
+    public List<DeliveryEvaluation> getBySla(
+            @PathVariable Long slaId) {
+        return service.getEvaluationsForRequirement(slaId);
     }
 }

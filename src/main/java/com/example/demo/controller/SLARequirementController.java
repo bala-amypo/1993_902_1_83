@@ -1,28 +1,33 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.SLARequirement;
+import com.example.demo.service.SLARequirementService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/sla-requirement")
+@RequestMapping("/sla-requirements")
 public class SLARequirementController {
 
-    @GetMapping
-    public String getRequirement() {
-        return "GET SLA Requirement";
+    private final SLARequirementService service;
+
+    public SLARequirementController(SLARequirementService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public String createRequirement() {
-        return "POST SLA Requirement";
+    public SLARequirement create(@RequestBody SLARequirement sla) {
+        return service.createRequirement(sla);
     }
 
     @PutMapping("/{id}")
-    public String updateRequirement(@PathVariable Long id) {
-        return "PUT SLA Requirement " + id;
+    public SLARequirement update(
+            @PathVariable Long id,
+            @RequestBody SLARequirement sla) {
+        return service.updateRequirement(id, sla);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRequirement(@PathVariable Long id) {
-        return "DELETE SLA Requirement " + id;
+    public void deactivate(@PathVariable Long id) {
+        service.deactivateRequirement(id);
     }
 }

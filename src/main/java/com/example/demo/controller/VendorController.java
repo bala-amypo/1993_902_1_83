@@ -1,28 +1,45 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Vendor;
+import com.example.demo.service.VendorService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/vendor")
+@RequestMapping("/vendors")
 public class VendorController {
 
-    @GetMapping
-    public String getVendor() {
-        return "GET Vendor";
+    private final VendorService vendorService;
+
+    public VendorController(VendorService vendorService) {
+        this.vendorService = vendorService;
     }
 
     @PostMapping
-    public String createVendor() {
-        return "POST Vendor";
+    public Vendor createVendor(@RequestBody Vendor vendor) {
+        return vendorService.createVendor(vendor);
     }
 
     @PutMapping("/{id}")
-    public String updateVendor(@PathVariable Long id) {
-        return "PUT Vendor " + id;
+    public Vendor updateVendor(
+            @PathVariable Long id,
+            @RequestBody Vendor vendor) {
+        return vendorService.updateVendor(id, vendor);
+    }
+
+    @GetMapping("/{id}")
+    public Vendor getVendor(@PathVariable Long id) {
+        return vendorService.getVendorById(id);
+    }
+
+    @GetMapping
+    public List<Vendor> getAllVendors() {
+        return vendorService.getAllVendors();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteVendor(@PathVariable Long id) {
-        return "DELETE Vendor " + id;
+    public void deactivateVendor(@PathVariable Long id) {
+        vendorService.deactivateVendor(id);
     }
 }

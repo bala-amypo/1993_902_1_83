@@ -5,11 +5,9 @@ import java.util.List;
 
 public interface DeliveryEvaluationService {
 
-    DeliveryEvaluation saveEvaluation(DeliveryEvaluation evaluation);
+    DeliveryEvaluation createEvaluation(DeliveryEvaluation evaluation);
 
-    List<DeliveryEvaluation> getAllEvaluations();
+    List<DeliveryEvaluation> getEvaluationsForVendor(Long vendorId);
 
-    DeliveryEvaluation getEvaluationById(Long id);
-
-    void deleteEvaluation(Long id);
+    List<DeliveryEvaluation> getEvaluationsForRequirement(Long slaId);
 }

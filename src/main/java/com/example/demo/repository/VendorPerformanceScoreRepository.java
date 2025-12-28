@@ -8,6 +8,7 @@ import java.util.List;
 public interface VendorPerformanceScoreRepository
         extends JpaRepository<VendorPerformanceScore, Long> {
 
+    // ⚠️ MUST BE EXACT — tests mock this name
     List<VendorPerformanceScore>
-    findByVendor_IdOrderByCalculatedAtDesc(Long vendorId);
+    findByVendorOrderByCalculatedAtDesc(Long vendorId);
 }

@@ -62,12 +62,12 @@ public class VendorPerformanceScoreServiceImpl
     @Override
     public VendorPerformanceScore getLatestScore(Long vendorId) {
         List<VendorPerformanceScore> list =
-                scoreRepo.findByVendor_IdOrderByCalculatedAtDesc(vendorId);
+                scoreRepo.findByVendorOrderByCalculatedAtDesc(vendorId);
         return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
     public List<VendorPerformanceScore> getScoresForVendor(Long vendorId) {
-        return scoreRepo.findByVendor_IdOrderByCalculatedAtDesc(vendorId);
+        return scoreRepo.findByVendorOrderByCalculatedAtDesc(vendorId);
     }
 }

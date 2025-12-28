@@ -14,7 +14,7 @@ public interface DeliveryEvaluationRepository
 
     List<DeliveryEvaluation> findBySlaRequirementId(Long slaId);
 
-    // Mocked in tests – Spring never executes these
+    // mocked directly in tests
     List<DeliveryEvaluation> findHighQualityDeliveries(
             Vendor vendor, Double quality);
 

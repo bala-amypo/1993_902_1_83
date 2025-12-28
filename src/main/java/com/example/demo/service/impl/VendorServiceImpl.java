@@ -1,38 +1,37 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Vendor;
-import com.example.demo.repository.VendorRepository;
-import com.example.demo.service.VendorService;
+import com.example.demo.model.VendorTier;
+import com.example.demo.repository.VendorTierRepository;
+import com.example.demo.service.VendorTierService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class VendorServiceImpl implements VendorService {
+public class VendorTierServiceImpl implements VendorTierService {
 
-    private final VendorRepository vendorRepository;
+    private final VendorTierRepository repository;
 
-    public VendorServiceImpl(VendorRepository vendorRepository) {
-        this.vendorRepository = vendorRepository;
+    public VendorTierServiceImpl(VendorTierRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Vendor saveVendor(Vendor vendor) {
-        return vendorRepository.save(vendor);
+    public VendorTier createTier(VendorTier tier) {
+
+        if (tier.getMinScoreThreshold() < 0 ||
+                tier.getMinScoreThreshold() > 100)
+            throw new IllegalArgumentException("Threshold must be between 0–100");
+
+        if (repository.existsByTierName(tier.getTierName()))
+            throw new IllegalArgumentException("Tier name must be unique");
+
+        return repository.save(tier);
     }
 
     @Override
-    public List<Vendor> getAllVendors() {
-        return vendorRepository.findAll();
-    }
-
-    @Override
-    public Vendor getVendorById(Long id) {
-        return vendorRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public void deleteVendor(Long id) {
-        vendorRepository.deleteById(id);
+    public void deactivateTier(Long id) {
+        VendorTier tier = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Tier not found"));
+        tier.setActive(false);
+        repository.save(tier);
     }
 }

@@ -1,23 +1,33 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import com.example.demo.service.DeliveryEvaluationService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class DeliveryEvaluationServiceImpl implements DeliveryEvaluationService {
 
-    private final DeliveryEvaluationRepository repo;
+    private final DeliveryEvaluationRepository evaluationRepo;
     private final VendorRepository vendorRepo;
     private final SLARequirementRepository slaRepo;
 
     public DeliveryEvaluationServiceImpl(
-            DeliveryEvaluationRepository repo,
+            DeliveryEvaluationRepository evaluationRepo,
             VendorRepository vendorRepo,
             SLARequirementRepository slaRepo) {
-        this.repo = repo;
+        this.evaluationRepo = evaluationRepo;
         this.vendorRepo = vendorRepo;
         this.slaRepo = slaRepo;
     }
 
+    @Override
     public DeliveryEvaluation createEvaluation(DeliveryEvaluation eval) {
 
         Vendor vendor = vendorRepo.findById(eval.getVendor().getId())
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException("Vendor not found"));
 
         if (!vendor.getActive())
             throw new IllegalStateException("Only active vendors allowed");
@@ -29,7 +39,7 @@ public class DeliveryEvaluationServiceImpl implements DeliveryEvaluationService 
             throw new IllegalArgumentException("between 0 and 100");
 
         SLARequirement sla = slaRepo.findById(eval.getSlaRequirement().getId())
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException("SLA not found"));
 
         eval.setMeetsDeliveryTarget(
                 eval.getActualDeliveryDays() <= sla.getMaxDeliveryDays());
@@ -37,6 +47,16 @@ public class DeliveryEvaluationServiceImpl implements DeliveryEvaluationService 
         eval.setMeetsQualityTarget(
                 eval.getQualityScore() >= sla.getQualityThreshold());
 
-        return repo.save(eval);
+        return evaluationRepo.save(eval);
+    }
+
+    @Override
+    public List<DeliveryEvaluation> getEvaluationsForVendor(Long vendorId) {
+        return evaluationRepo.findByVendorId(vendorId);
+    }
+
+    @Override
+    public List<DeliveryEvaluation> getEvaluationsForRequirement(Long slaId) {
+        return evaluationRepo.findBySlaRequirementId(slaId);
     }
 }

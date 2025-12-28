@@ -5,8 +5,6 @@ import com.example.demo.repository.SLARequirementRepository;
 import com.example.demo.service.SLARequirementService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class SLARequirementServiceImpl implements SLARequirementService {
 
@@ -17,22 +15,41 @@ public class SLARequirementServiceImpl implements SLARequirementService {
     }
 
     @Override
-    public SLARequirement saveRequirement(SLARequirement requirement) {
-        return repository.save(requirement);
+    public SLARequirement createRequirement(SLARequirement r) {
+
+        if (r.getMaxDeliveryDays() == null || r.getMaxDeliveryDays() <= 0)
+            throw new IllegalArgumentException("Max delivery days must be greater than 0");
+
+        if (r.getQualityThreshold() < 0 || r.getQualityThreshold() > 100)
+            throw new IllegalArgumentException("Quality score must be between 0 and 100");
+
+        if (repository.existsByRequirementName(r.getRequirementName()))
+            throw new IllegalArgumentException("Requirement name must be unique");
+
+        return repository.save(r);
     }
 
     @Override
-    public List<SLARequirement> getAllRequirements() {
-        return repository.findAll();
+    public SLARequirement updateRequirement(Long id, SLARequirement update) {
+        SLARequirement existing = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Requirement not found"));
+
+        if (update.getRequirementName() != null &&
+                repository.existsByRequirementName(update.getRequirementName())) {
+            throw new IllegalArgumentException("Requirement name must be unique");
+        }
+
+        if (update.getRequirementName() != null)
+            existing.setRequirementName(update.getRequirementName());
+
+        return repository.save(existing);
     }
 
     @Override
-    public SLARequirement getRequirementById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    @Override
-    public void deleteRequirement(Long id) {
-        repository.deleteById(id);
+    public void deactivateRequirement(Long id) {
+        SLARequirement r = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Requirement not found"));
+        r.setActive(false);
+        repository.save(r);
     }
 }

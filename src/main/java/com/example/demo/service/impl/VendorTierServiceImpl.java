@@ -5,8 +5,6 @@ import com.example.demo.repository.VendorTierRepository;
 import com.example.demo.service.VendorTierService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class VendorTierServiceImpl implements VendorTierService {
 
@@ -17,22 +15,27 @@ public class VendorTierServiceImpl implements VendorTierService {
     }
 
     @Override
-    public VendorTier saveVendorTier(VendorTier vendorTier) {
-        return vendorTierRepository.save(vendorTier);
+    public VendorTier createTier(VendorTier tier) {
+
+        if (tier.getMinScoreThreshold() < 0 ||
+            tier.getMinScoreThreshold() > 100) {
+            throw new IllegalArgumentException("Threshold must be between 0–100");
+        }
+
+        if (vendorTierRepository.existsByTierName(tier.getTierName())) {
+            throw new IllegalArgumentException("Tier name must be unique");
+        }
+
+        return vendorTierRepository.save(tier);
     }
 
     @Override
-    public List<VendorTier> getAllVendorTiers() {
-        return vendorTierRepository.findAll();
-    }
+    public void deactivateTier(Long id) {
 
-    @Override
-    public VendorTier getVendorTierById(Long id) {
-        return vendorTierRepository.findById(id).orElse(null);
-    }
+        VendorTier tier = vendorTierRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Tier not found"));
 
-    @Override
-    public void deleteVendorTier(Long id) {
-        vendorTierRepository.deleteById(id);
+        tier.setActive(false);
+        vendorTierRepository.save(tier);
     }
 }

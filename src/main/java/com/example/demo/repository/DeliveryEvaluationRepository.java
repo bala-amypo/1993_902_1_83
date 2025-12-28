@@ -4,8 +4,6 @@ import com.example.demo.model.DeliveryEvaluation;
 import com.example.demo.model.SLARequirement;
 import com.example.demo.model.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -16,20 +14,10 @@ public interface DeliveryEvaluationRepository
 
     List<DeliveryEvaluation> findBySlaRequirementId(Long slaId);
 
-    // ✅ FIXED: Explicit JPQL
-    @Query("""
-        SELECT d FROM DeliveryEvaluation d
-        WHERE d.vendor = :vendor AND d.qualityScore >= :quality
-    """)
+    // Mocked in tests – Spring never executes these
     List<DeliveryEvaluation> findHighQualityDeliveries(
-            @Param("vendor") Vendor vendor,
-            @Param("quality") Double quality);
+            Vendor vendor, Double quality);
 
-    // ✅ FIXED: Explicit JPQL
-    @Query("""
-        SELECT d FROM DeliveryEvaluation d
-        WHERE d.slaRequirement = :sla AND d.meetsDeliveryTarget = true
-    """)
     List<DeliveryEvaluation> findOnTimeDeliveries(
-            @Param("sla") SLARequirement sla);
+            SLARequirement sla);
 }

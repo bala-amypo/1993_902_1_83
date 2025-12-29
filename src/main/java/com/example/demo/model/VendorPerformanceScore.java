@@ -11,25 +11,63 @@ public class VendorPerformanceScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Float onTimePercentage;
+    private Float qualityCompliancePercentage;
+    private Float overallScore;
+
+    private LocalDateTime calculatedAt;
+
     @ManyToOne
+    @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    private Double onTimePercentage;
-    private Double qualityCompliancePercentage;
-    private Double overallScore;
+    // ---------- getters & setters ----------
 
-    private LocalDateTime calculatedAt = LocalDateTime.now();
-
-    public VendorPerformanceScore() {}
-
-    public VendorPerformanceScore(Vendor v, Double on, Double q, Double o) {
-        this.vendor = v;
-        this.onTimePercentage = on;
-        this.qualityCompliancePercentage = q;
-        this.overallScore = o;
+    public Long getId() {
+        return id;
     }
 
-    public Double getOnTimePercentage() { return onTimePercentage; }
-    public Double getQualityCompliancePercentage() { return qualityCompliancePercentage; }
-    public Double getOverallScore() { return overallScore; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Float getOnTimePercentage() {
+        return onTimePercentage;
+    }
+
+    public void setOnTimePercentage(Float onTimePercentage) {
+        this.onTimePercentage = onTimePercentage;
+    }
+
+    public Float getQualityCompliancePercentage() {
+        return qualityCompliancePercentage;
+    }
+
+    public void setQualityCompliancePercentage(Float qualityCompliancePercentage) {
+        this.qualityCompliancePercentage = qualityCompliancePercentage;
+    }
+
+    public Float getOverallScore() {
+        return overallScore;
+    }
+
+    public void setOverallScore(Float overallScore) {
+        this.overallScore = overallScore;
+    }
+
+    public LocalDateTime getCalculatedAt() {
+        return calculatedAt;
+    }
+
+    public void setCalculatedAt(LocalDateTime calculatedAt) {
+        this.calculatedAt = calculatedAt;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
 }

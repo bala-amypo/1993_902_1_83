@@ -35,18 +35,18 @@ public class VendorPerformanceScoreServiceImpl
         Vendor vendor = vendorRepo.findById(vendorId)
                 .orElseThrow(() -> new IllegalArgumentException("Vendor not found"));
 
-        List<DeliveryEvaluation> evals =
+        List<DeliveryEvaluation> evaluations =
                 evalRepo.findByVendorId(vendorId);
 
-        if (evals.isEmpty()) {
+        if (evaluations.isEmpty()) {
             throw new IllegalStateException("No evaluations found");
         }
 
-        long total = evals.size();
-        long onTime = evals.stream()
+        long total = evaluations.size();
+        long onTime = evaluations.stream()
                 .filter(DeliveryEvaluation::getMeetsDeliveryTarget)
                 .count();
-        long quality = evals.stream()
+        long quality = evaluations.stream()
                 .filter(DeliveryEvaluation::getMeetsQualityTarget)
                 .count();
 
@@ -76,7 +76,7 @@ public class VendorPerformanceScoreServiceImpl
     }
 
     @Override
-    public List<VendorPerformanceScore> getScoresForVendor(Long vendorId) {
+    public List<VendorPerformanceScore> getScoresByVendor(Long vendorId) {
         return scoreRepo.findByVendorOrderByCalculatedAtDesc(vendorId);
     }
 }

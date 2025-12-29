@@ -11,9 +11,9 @@ public class VendorPerformanceScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Float onTimePercentage;
-    private Float qualityCompliancePercentage;
-    private Float overallScore;
+    private Double onTimePercentage;
+    private Double qualityCompliancePercentage;
+    private Double overallScore;
 
     private LocalDateTime calculatedAt;
 
@@ -21,50 +21,68 @@ public class VendorPerformanceScore {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    // ---------- getters & setters ----------
+    public VendorPerformanceScore() {}
+
+    // ✅ REQUIRED BY TESTS
+    public VendorPerformanceScore(
+            Vendor vendor,
+            Double onTimePercentage,
+            Double qualityCompliancePercentage,
+            Double overallScore) {
+
+        this.vendor = vendor;
+        this.onTimePercentage = onTimePercentage;
+        this.qualityCompliancePercentage = qualityCompliancePercentage;
+        this.overallScore = overallScore;
+        this.calculatedAt = LocalDateTime.now();
+    }
+
+    // ---------- GETTERS ----------
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Float getOnTimePercentage() {
+    public Double getOnTimePercentage() {
         return onTimePercentage;
     }
 
-    public void setOnTimePercentage(Float onTimePercentage) {
-        this.onTimePercentage = onTimePercentage;
-    }
-
-    public Float getQualityCompliancePercentage() {
+    public Double getQualityCompliancePercentage() {
         return qualityCompliancePercentage;
     }
 
-    public void setQualityCompliancePercentage(Float qualityCompliancePercentage) {
-        this.qualityCompliancePercentage = qualityCompliancePercentage;
-    }
-
-    public Float getOverallScore() {
+    public Double getOverallScore() {
         return overallScore;
-    }
-
-    public void setOverallScore(Float overallScore) {
-        this.overallScore = overallScore;
     }
 
     public LocalDateTime getCalculatedAt() {
         return calculatedAt;
     }
 
-    public void setCalculatedAt(LocalDateTime calculatedAt) {
-        this.calculatedAt = calculatedAt;
-    }
-
     public Vendor getVendor() {
         return vendor;
+    }
+
+    // ---------- SETTERS (🔥 MISSING BEFORE) ----------
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setOnTimePercentage(Double onTimePercentage) {
+        this.onTimePercentage = onTimePercentage;
+    }
+
+    public void setQualityCompliancePercentage(Double qualityCompliancePercentage) {
+        this.qualityCompliancePercentage = qualityCompliancePercentage;
+    }
+
+    public void setOverallScore(Double overallScore) {
+        this.overallScore = overallScore;
+    }
+
+    public void setCalculatedAt(LocalDateTime calculatedAt) {
+        this.calculatedAt = calculatedAt;
     }
 
     public void setVendor(Vendor vendor) {

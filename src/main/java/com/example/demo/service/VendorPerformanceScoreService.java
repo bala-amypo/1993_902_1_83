@@ -9,5 +9,6 @@ public interface VendorPerformanceScoreService {
 
     VendorPerformanceScore getLatestScore(Long vendorId);
 
-    List<VendorPerformanceScore> getScoresForVendor(Long vendorId);
+    // ✅ REQUIRED BY CONTROLLER
+    List<VendorPerformanceScore> getScoresByVendor(Long vendorId);
 }
